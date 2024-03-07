@@ -13,7 +13,7 @@ function Blog() {
   console.log(id);
   const { loading, blog } = useBlog({ id: id || "" });
 
-  if (loading) {
+  if (loading || !blog) {
     return (
       <div className="flex flex-col h-screen justify-center">
         <div className="flex justify-center">
