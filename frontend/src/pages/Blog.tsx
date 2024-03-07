@@ -1,12 +1,10 @@
-// could store it in a hook or
-
-import Appbar from "../components/Appbar";
-import BlogSkeleton from "../components/BlogSkeleton";
 import FullBlog from "../components/FullBlog";
 import Spinner from "../components/Spinner";
 import { useBlog } from "../hooks";
 import { useParams } from "react-router-dom";
 
+
+// could store it in a hook or
 // atom / selector families
 function Blog() {
   const { id } = useParams();
