@@ -4,7 +4,7 @@ import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 
 
-interface Blog {
+export interface Blog {
     content : string;
     title : string;
     id : string;
@@ -13,6 +13,40 @@ interface Blog {
         name : string;
     }
 }
+
+export const useBlog = ({id} : {id :string}) => {
+    const [loading, setLoading] = useState(true);
+    const [blog, setBlog] = useState<Blog>();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if(!token){
+            navigate("/signup")
+        }
+        const fetchData = async () => {
+            const response = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+                headers : {
+                    "Content-Type" : "application/json",
+                    "Authorization" : `Bearer ${token}`
+                }
+            })
+      
+            setBlog(response.data.blog)
+            setLoading(false)
+        }
+
+        fetchData();
+    }, [id])
+
+    return {
+        loading,
+        blog
+    } 
+}
+
+
 
 export const useBlogs = () => {
     const [loading, setLoading] = useState(true);
