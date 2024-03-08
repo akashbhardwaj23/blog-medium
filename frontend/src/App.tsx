@@ -5,6 +5,7 @@ import Blog from './pages/Blog'
 import Blogs from './pages/Blogs'
 import Publish from './pages/Publish'
 import Authentication from './components/Authentication'
+import NotFound from './pages/NotFound'
 
 function App() {
 
@@ -18,7 +19,8 @@ function App() {
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<Blog />} />
           <Route path="/publish" element= {<Publish />} />
-        </Routes>
+          <Route path='/*' element={<NotFound/>} />
+         </Routes>
       </BrowserRouter>
     </>
   )
