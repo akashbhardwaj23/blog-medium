@@ -39,7 +39,7 @@ function Blogs() {
               authorName={blog.author.name || "Anonymous"}
               title={blog.title}
               content={blog.content}
-              publishedDate={blog.createdAt}
+              publishedDate={new Date(Date.parse(blog.createdAt)).toDateString()}
             />
           ))}
         </div>
