@@ -31,7 +31,7 @@ function Blogs() {
     <div>
       <Appbar />
       <div className="flex justify-center">
-        <div className="max-w-xl">
+        <div className="max-w-2xl">
           {blogs.map((blog) => (
             <BlogCard
               id={blog.id}
