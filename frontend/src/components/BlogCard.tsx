@@ -53,12 +53,12 @@ export function Avatar({
     <div
       className={`relative inline-flex items-center justify-center ${
         size === "small" ? "w-6 h-6" : "w-10 h-10"
-      } overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600`}
+      } overflow-hidden bg-gray-500 rounded-full `}
     >
       <span
         className={`font-medium ${
           size === "small" ? "text-xs" : "text-sm"
-        } text-gray-600 dark:text-gray-300 flex items-center justify-center`}
+        } text-white flex items-center justify-center w-full h-full`}
       >
         {authorName[0]}
       </span>
