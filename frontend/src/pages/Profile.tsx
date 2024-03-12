@@ -9,6 +9,7 @@ function Profile() {
 
   const { user, loading } = useProfile(id as string);
 
+//   console.log(user?.posts)
     const navigate = useNavigate()
 
   if(loading){

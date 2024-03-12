@@ -10,7 +10,7 @@ function Publish() {
 
 
     const navigate = useNavigate();
-    console.log(title, content)
+    // console.log(title, content)
 
   return (
     <div>

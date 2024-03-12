@@ -8,7 +8,7 @@ function Appbar() {
 
   const {id} = useId();
 
-  console.log(id)
+  // console.log(id)
 
 /*
 

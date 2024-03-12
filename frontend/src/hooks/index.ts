@@ -67,7 +67,7 @@ export const useBlogs = () => {
                 }
             })
 
-            console.log(response.data.blogs)
+            // console.log(response.data.blogs)
             setBlogs(response.data.blogs)
             setLoading(false)
         }
