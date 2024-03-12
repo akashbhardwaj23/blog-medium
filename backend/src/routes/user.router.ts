@@ -86,25 +86,56 @@ userRouter.post("/signin", async (c) => {
 });
 
 
+
+userRouter.use('/*', async(c, next) => {
+  // extract the user id and pass it down to 
+  // route handler
+  // get the header
+  // verify the header
+  // if the header is correct we can proceed
+  // if not, we return the user a 403 code
+
+
+  const header = c.req.header("authorization") || "";
+
+  const token = header?.split(" ")[1]
+
+
+  try {
+      const response = await verify(token, c.env.JWT_SECRET)
+
+  if(response.id){
+
+      // this has user id
+      c.set("userId", response.id)
+      await next();
+  }
+  else {
+      c.status(403)
+      return c.json({error : "You are not authorized to access this route"})
+  }
+  } catch (error) {
+        c.status(403)
+          return c.json({error : "You are not authorized to access this route"})   
+  }
+})
+
+
+
+
+
+
 userRouter.get("/me", async (c) => {
-    const prisma =  new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-
-
     try {
-      const user = await prisma.user.findFirst();
 
-
-      if(!user){
-        c.status(404)
-        return c.json({error : "User not found"})
-      }
-
-      return c.json({id : user.id})
+      const id =  c.get("userId")
+      console.log(id)
+      c.status(200)
+      return c.json({id})
+      
     } catch (error) {
       c.status(404)
-      return c.json({error : "User not found"})
+      return c.json({error : "Id not found"})
     }
 })
 

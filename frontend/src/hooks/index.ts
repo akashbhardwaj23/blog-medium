@@ -133,6 +133,7 @@ export const useProfile = (id:string) => {
     
     const navigate = useNavigate()
     useEffect(() => {
+        // can skip this part 
         const token = localStorage.getItem("token");
         if(!token){
             navigate("/signup")

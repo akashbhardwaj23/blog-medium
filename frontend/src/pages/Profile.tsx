@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Appbar from "../components/Appbar";
 import { useProfile } from "../hooks";
 import { Avatar } from "../components/BlogCard";
@@ -9,8 +9,7 @@ function Profile() {
 
   const { user, loading } = useProfile(id as string);
 
-
-
+    const navigate = useNavigate()
 
   if(loading){
     return <div>
@@ -48,8 +47,14 @@ function Profile() {
               <div className="text-slate-600 font-medium">100K followers</div>
 
               <div>
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md">
+                <button className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md mr-4">
                   Follow
+                </button>
+                <button className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md" onClick={() => {
+                    localStorage.removeItem("token")
+                    navigate("/signup")
+                }}>
+                  Logout
                 </button>
               </div>
             </div>
