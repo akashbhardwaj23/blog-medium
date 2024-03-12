@@ -85,4 +85,64 @@ userRouter.post("/signin", async (c) => {
   }
 });
 
+
+userRouter.get("/me", async (c) => {
+    const prisma =  new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+
+    try {
+      const user = await prisma.user.findFirst();
+
+
+      if(!user){
+        c.status(404)
+        return c.json({error : "User not found"})
+      }
+
+      return c.json({id : user.id})
+    } catch (error) {
+      c.status(404)
+      return c.json({error : "User not found"})
+    }
+})
+
+
+
+
+userRouter.get(`/me/:id`, async (c) => {
+
+  const {id} = c.req.param();
+
+  const prisma =  new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+
+  try {
+    const user = await prisma.user.findUnique({
+      where : {
+        id : id
+      },
+      select : {
+        name : true,
+        email : true,
+        id : true,
+         posts : true
+    }});
+
+
+    if(!user){
+      c.status(404)
+      return c.json({error : "User not found"})
+    }
+
+    return c.json({user})
+  } catch (error) {
+    c.status(404)
+    return c.json({error : "User not found"})
+  }
+})
+
 export default userRouter;

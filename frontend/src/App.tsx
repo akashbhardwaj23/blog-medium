@@ -6,6 +6,8 @@ import Blogs from './pages/Blogs'
 import Publish from './pages/Publish'
 import Authentication from './components/Authentication'
 import NotFound from './pages/NotFound'
+import Notification from './pages/Notification'
+import Profile from './pages/Profile'
 
 function App() {
 
@@ -18,6 +20,8 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<Blog />} />
+          <Route path='/me/:id' element={<Profile />} />
+          <Route path='/notification' element={<Notification />} />
           <Route path="/publish" element= {<Publish />} />
           <Route path='/*' element={<NotFound/>} />
          </Routes>

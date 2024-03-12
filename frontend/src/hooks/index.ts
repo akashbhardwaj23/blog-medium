@@ -81,3 +81,82 @@ export const useBlogs = () => {
     }
 
 }
+
+interface User {
+    name : string;
+    email : string;
+    id : string;
+    posts : Blog[]
+}
+
+
+
+export const useId = () => {
+    const [loading, setLoading] = useState(true)
+    const [id, setId] = useState<string>("");
+    
+    const navigate = useNavigate()
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if(!token){
+            navigate("/signup")
+        }
+        const fetchData = async () => {
+            const response = await axios.get(`${BACKEND_URL}/api/v1/user/me`, {
+                headers : {
+                    "Content-Type" : "application/json",
+                    "Authorization" : `Bearer ${token}`
+                }
+            })
+
+            // console.log(response.data.blogs)
+            setId(response.data.id)
+            setLoading(false)
+        }
+
+        fetchData();
+    }, [])
+
+
+    return {
+        id,
+        loading
+    }
+
+}
+
+
+
+export const useProfile = (id:string) => {
+    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState<User>();
+    
+    const navigate = useNavigate()
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if(!token){
+            navigate("/signup")
+        }
+        const fetchData = async () => {
+            const response = await axios.get(`${BACKEND_URL}/api/v1/user/me/${id}`, {
+                headers : {
+                    "Content-Type" : "application/json",
+                    "Authorization" : `Bearer ${token}`
+                }
+            })
+
+            // console.log(response.data.blogs)
+            setUser(response.data.user)
+            setLoading(false)
+        }
+
+        fetchData();
+    }, [])
+
+
+    return {
+        user,
+        loading
+    }
+
+}

@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 interface BlogCardProps {
   authorName: string;
@@ -45,15 +46,37 @@ export default BlogCard;
 export function Avatar({
   authorName,
   size = "small",
+  id,
 }: {
   authorName: string;
   size?: "small" | "big";
+  id?: string;
 }) {
+
+  const navigate = useNavigate();
+  if (id) {
+    return (
+      <div
+        className={`relative inline-flex items-center justify-center ${
+          size === "small" ? "w-6 h-6" : "w-10 h-10"
+        } overflow-hidden bg-gray-500 rounded-full cursor-pointer`}
+        onClick={() => navigate(`/me/${id}`)}
+      >
+        <span
+          className={`font-medium ${
+            size === "small" ? "text-xs" : "text-sm"
+          } text-white flex items-center justify-center w-full h-full`}
+        >
+          {authorName[0]}
+        </span>
+      </div>
+    );
+  }
   return (
     <div
       className={`relative inline-flex items-center justify-center ${
         size === "small" ? "w-6 h-6" : "w-10 h-10"
-      } overflow-hidden bg-gray-500 rounded-full `}
+      } overflow-hidden bg-gray-500 rounded-full cursor-pointer `}
     >
       <span
         className={`font-medium ${
