@@ -86,7 +86,8 @@ interface User {
     name : string;
     email : string;
     id : string;
-    posts : Blog[]
+    posts : Blog[],
+    createdAt? : string
 }
 
 
@@ -154,10 +155,49 @@ export const useProfile = (id:string) => {
         fetchData();
     }, [])
 
-
     return {
         user,
         loading
     }
 
 }
+
+
+
+// export const userUpdate = () => {
+
+//     const [loading, setLoading] = useState(true);
+//     const [user, setUser] = useState<User>();
+
+//     const navigate = useNavigate();
+
+//     useEffect(() => {
+//         const token = localStorage.getItem("token");
+//         if(!token){
+//             navigate("/signup")
+//         }
+
+//         const fetchData = async () => {
+//             const response = await axios.put(`${BACKEND_URL}/api/v1/user/change-username`, {
+//                 headers : {
+//                     "Content-Type" : "application/json",
+//                     "Authorization" : `Bearer ${token}`
+//                 }
+//             })
+
+//             console.log(response.data.user)
+
+//             setUser(response.data.user)
+//             setLoading(false)
+//         }
+
+//         fetchData();
+//     }, []);
+
+
+//     return {
+//         loading,
+//         user
+//     }
+
+// }

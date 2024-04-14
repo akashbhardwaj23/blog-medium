@@ -3,24 +3,70 @@ import Appbar from "../components/Appbar";
 import { useProfile } from "../hooks";
 import { Avatar } from "../components/BlogCard";
 import Spinner from "../components/Spinner";
+import { useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 function Profile() {
   const { id } = useParams();
 
   const { user, loading } = useProfile(id as string);
 
-//   console.log(user?.posts)
-    const navigate = useNavigate()
+  const [isInput, setIsInput] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
 
-  if(loading){
-    return <div>
+  const sendUsername = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return;
+    }
+
+    console.log(token);
+
+    try {
+        await axios.put(
+        `${BACKEND_URL}/api/v1/user/change-username`,
+        { username },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    setIsInput((prev) => !prev);
+    setUsername("");
+
+
+
+
+    //  i am using artificial reload here 
+
+    window.location.reload();
+
+
+    
+  };
+
+  //   console.log(user?.posts)
+  const navigate = useNavigate();
+
+  if (loading) {
+    return (
+      <div>
         <Appbar />
         <div className="flex justify-center items-center h-screen">
-            <Spinner />
+          <Spinner />
         </div>
-    </div>
+      </div>
+    );
   }
-  
+
   return (
     <div className="h-screen overflow-hidden">
       <Appbar />
@@ -42,19 +88,47 @@ function Profile() {
               <div className="mb-4">
                 <Avatar size="big" authorName={user?.name || "Anonymous"} />
               </div>
-              <div className="text-lg font-semibold">
-                {user?.name || "Anonymous"}
+              <div className=" text-lg font-semibold flex items-center">
+                {isInput ? (
+                  <input
+                    type="email"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
+                    placeholder="UserName"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                ) : (
+                  user?.name || "Anonymous"
+                )}
+                {!isInput ? (
+                  <button
+                    className="px-2 text-sm rounded-sm text-green-600 border border-green-700 py-1 bg-transparent ml-4"
+                    onClick={() => setIsInput((prev) => !prev)}
+                  >
+                    Edit
+                  </button>
+                ) : (
+                  <button
+                    className="ml-2 px-2 rounded-sm py-1 text-green-600 border border-green-700"
+                    onClick={sendUsername}
+                  >
+                    Save
+                  </button>
+                )}
               </div>
+
               <div className="text-slate-600 font-medium">100K followers</div>
 
               <div>
                 <button className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md mr-4">
                   Follow
                 </button>
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md" onClick={() => {
-                    localStorage.removeItem("token")
-                    navigate("/signup")
-                }}>
+                <button
+                  className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    navigate("/signup");
+                  }}
+                >
                   Logout
                 </button>
               </div>

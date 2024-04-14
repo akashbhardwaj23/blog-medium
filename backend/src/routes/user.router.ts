@@ -100,7 +100,7 @@ userRouter.use('/*', async(c, next) => {
 
   const token = header?.split(" ")[1]
 
-
+  console.log(token)
   try {
       const response = await verify(token, c.env.JWT_SECRET)
 
@@ -124,10 +124,58 @@ userRouter.use('/*', async(c, next) => {
 
 
 
+userRouter.put("/change-username", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  console.log("here")
+
+  const {username} = await c.req.json();
+
+  console.log(username)
+
+  if(!username){
+    c.status(403);
+    return c.json({error : "Invalid Input"})
+  }
+  try {
+    const id = c.get("userId");
+
+    if(!id) return c.json({error : "User not found"})
+
+      const user = await prisma.user.update({
+        where : {
+          id
+        }, 
+        data : {
+          name : username
+        },
+
+        select : {
+          name : true,
+          id : true,
+          posts : true,
+          createdAt : true,
+          email : true
+        }
+      });
+
+
+      c.status(200)
+      return c.json({user})
+
+  } catch (error) {
+     c.status(501)
+     return c.json({message : "Error at Change UserName"})
+  }
+})
+
+
+
 
 userRouter.get("/me", async (c) => {
     try {
-
       const id =  c.get("userId")
       console.log(id)
       c.status(200)

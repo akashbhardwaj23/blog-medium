@@ -137,7 +137,7 @@ blogRouter.get("/bulk", async (c) => {
             }
         }
     });
-    console.log(blogs)
+    // console.log(blogs)
     
     return c.json({blogs})
 })
@@ -173,7 +173,7 @@ blogRouter.get("/:id", async (c) => {
 
  } catch (error) {
     c.status(500)
-        console.log(error)
+        // console.log(error)
         return c.json({error : "Internal server error"})    
  }
 })

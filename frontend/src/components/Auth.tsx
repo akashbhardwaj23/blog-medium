@@ -80,7 +80,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
             <LabledInput
               label="Password"
               type="password"
-              placeholder="password"
+              placeholder="Password"
               onChange={(e) => {
                 setPostInputs((c) => {
                   return {
