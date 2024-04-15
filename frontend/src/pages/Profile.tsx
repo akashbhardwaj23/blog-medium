@@ -79,7 +79,20 @@ function Profile() {
             <div className="text-lg font-medium cursor-pointer mb-8">
               <span className="border-b border-slate-600">Home</span>
             </div>
-            <div>Post</div>
+            <div className="text-xl font-semibold mb-4">Post</div>
+            <div>
+              {user?.posts.map(((post) => (
+                <div key={post.id} className="bg-zinc-100 shadow-md p-4 rounded-sm">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-2xl font-semibold">{post.title}</div>
+                    <div className="text-lg font-medium text-slate-600 flex justify-end items-end">
+                     {new Date(Date.parse(post.createdAt)).toDateString()}
+                    </div>
+                  </div>
+                  <div className="text-slate-700">{post.content}</div>
+                </div>
+              )))}
+            </div>
           </div>
         </div>
         <div className="col-span-5 flex flex-col items-center pt-12">
