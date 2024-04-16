@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
+import {useGoogleLogin, googleLogout, TokenResponse} from "@react-oauth/google"
 
 
 export interface Blog {
@@ -161,6 +162,65 @@ export const useProfile = (id:string) => {
     }
 
 }
+
+export const useAuthGoogle = () => {
+    const [loading, setLoading] = useState(true);
+    const [credencial, setCredential] = useState<Omit<TokenResponse, "error" | "error_description" | "error_uri">>();
+    const [authToken, setAuthToken] = useState<string>();
+
+    const login = useGoogleLogin({
+        onSuccess : async (response) => setCredential(response),
+        onError : async (error) => console.log(error)
+    })
+
+
+    useEffect(() => {
+        if(credencial){
+            axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${credencial.access_token}`, {
+                headers: {
+                    Authorization: `Bearer ${credencial.access_token}`,
+                    Accept: 'application/json'
+                }
+            })
+            .then(async(res) => {
+                const {email, name, id} = res.data
+                let requestFailed = false;
+                    try {
+                        const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, {email, name , password: id});
+                        setAuthToken(response.data.jwt);
+                        console.log(response.status)
+                    } catch (error) {
+                        requestFailed = true;
+                        console.log("This is Error", error)
+                    }
+
+                    if(requestFailed){
+                        const anotherResponse = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, {email, password: id});
+                        setAuthToken(anotherResponse.data.jwt);
+                    }
+                setLoading(false);
+            })
+            .catch((err) => console.log(err));
+        }
+    }, [credencial])
+
+
+    const logout = () => {
+        googleLogout();
+        //@ts-ignore
+        setUserProfile(null)
+    }
+
+    return {
+        loading,
+        login,
+        logout,
+        authToken
+    }
+
+}
+
+
 
 
 

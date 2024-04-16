@@ -4,6 +4,7 @@ import { SignUpInput } from "@akashbhardwaj23/medium-common";
 import axios from "axios"
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
+import { useAuthGoogle } from "../hooks";
 
 function Auth({ type }: { type: "signup" | "signin" }) {
   const [postInputs, setPostInputs] = useState<SignUpInput>({
@@ -13,9 +14,19 @@ function Auth({ type }: { type: "signup" | "signin" }) {
   });
 
   // component will work but should not do this should define two components for signup and signin
-
-
   const navigate = useNavigate()
+  const {login, logout, authToken}= useAuthGoogle();
+
+  if(authToken){
+    if(localStorage.getItem('token')){
+      localStorage.clear();
+      localStorage.setItem("token", authToken);
+    }else {
+      localStorage.setItem("token", authToken);
+    }
+    navigate('/blogs')
+    return null
+  }
 
   async function sendRequest(){
     try {
@@ -95,7 +106,11 @@ function Auth({ type }: { type: "signup" | "signin" }) {
              {type === "signup" ? "Sign Up" : "Sign In"}
             </button>
           </div>
+          <div className="mt-2 w-full">
+              {authToken ? <button onClick={logout}className="px-4 py-2 bg-transparent border border-green-600 w-full uppercase text-green-600 font-semibold">Logout</button> : <button onClick={() => login()}className="px-4 py-2 bg-transparent border border-green-600 w-full uppercase text-green-600 font-semibold">Login With Google</button>}
         </div>
+        </div>
+        
       </div>
     </div>
   ); 
