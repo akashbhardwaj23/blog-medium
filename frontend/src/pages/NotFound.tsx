@@ -17,7 +17,7 @@ function NotFound() {
     </div>
 
     <div className="flex justify-center items-center">
-      <button className="border-2 border-gray-700 px-4 py-2 rounded-lg flex" onClick={() => navigate("/")}>
+      <button className="border-2 border-gray-700 px-4 py-2 rounded-lg flex" onClick={() => navigate("/blogs")}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
