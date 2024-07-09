@@ -107,7 +107,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
             </button>
           </div>
           <div className="mt-2 w-full">
-              {authToken ? <button onClick={logout}className="px-4 py-2 bg-transparent border border-green-600 w-full uppercase text-green-600 font-semibold">Logout</button> : <button onClick={() => login()}className="px-4 py-2 bg-transparent border border-green-600 w-full uppercase text-green-600 font-semibold">Login With Google</button>}
+              {authToken ? <button onClick={logout}className="px-4 py-2 bg-transparent border border-green-600 w-full uppercase text-green-600 font-semibold">Logout</button> : <button onClick={() => login()}className="px-4 py-2 bg-transparent rounded-md border border-green-600 w-full uppercase text-green-600 font-semibold">Login With Google</button>}
         </div>
         </div>
         

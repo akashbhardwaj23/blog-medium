@@ -37,7 +37,6 @@ userRouter.post("/signup", async (c) => {
   }
 
 
-
   // check the user if it is there
 
   // const user = await prisma.user.findUnique({
