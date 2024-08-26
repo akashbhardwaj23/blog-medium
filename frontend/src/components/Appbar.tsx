@@ -1,11 +1,10 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Avatar } from "./BlogCard";
 import { useId, useTheme } from "../hooks/index";
-import { useState } from "react";
 
 function Appbar() {
-  const pathname = useLocation();
-  const navigate = useNavigate();
+  // const pathname = useLocation();
+  // const navigate = useNavigate();
 
   const { id } = useId();
 
