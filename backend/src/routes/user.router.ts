@@ -14,6 +14,39 @@ const userRouter = new Hono<{
   };
 }>();
 
+
+
+userRouter.post("/googleIn", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl : c.env.DATABASE_URL
+  }).$extends(withAccelerate());
+
+  const body = await c.req.json();
+  console.log(body);
+  
+
+  // check if the user exist
+  // const user = await prisma.user.findFirst({
+
+  // })
+
+
+  const user = await prisma.user.create({
+    data : {
+      name : body.name,
+      email : body.email,
+      password : "sggd"
+    }
+  })
+
+
+  const jwt = await sign({id : user.id}, c.env.JWT_SECRET);
+
+  c.status(200)
+  return c.json({user, jwt})
+
+})
+
 // Don't Initialize prisma at the top because of worker
 
 // c is context
@@ -36,19 +69,18 @@ userRouter.post("/signup", async (c) => {
     return c.json({ error: "Invalid Input" });
   }
 
-
   // check the user if it is there
 
-  // const user = await prisma.user.findUnique({
-  //   where : {
-  //     email : body.email
-  //   }
-  // });
+  const user = await prisma.user.findUnique({
+    where : {
+      email : body.email
+    }
+  });
 
-  // if(user){
-  //   c.status(401)
-  //   return c.json({error : "User already exists"})
-  // }
+  if(user){
+    c.status(401)
+    return c.json({error : "User already exists"})
+  }
 
   
     const res = await prisma.user.create({

@@ -12,7 +12,7 @@ import Profile from './pages/Profile'
 function App() {
 
   return (
-    <>
+    <div className='w-full h-full'>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Authentication/>}/>
@@ -26,7 +26,7 @@ function App() {
           <Route path='/*' element={<NotFound/>} />
          </Routes>
       </BrowserRouter>
-    </>
+    </div>
   )
 }
 

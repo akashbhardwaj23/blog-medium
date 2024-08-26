@@ -15,20 +15,25 @@ function Publish() {
   return (
     <div>
       <Appbar />
-      <div className="flex justify-center pt-8">
+      <div className="flex justify-center pt-8 dark:text-white">
         <div className="max-w-screen-lg w-full">
           <input
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            className="block p-3 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-lg dark:bg-[#090D1F] dark:text-white placeholder:text-lg placeholder:font-semibold"
             placeholder="Title.."
             onChange={(e) => setTitle(e.target.value)}
           />
           <TextEditor onChange={(e) => setContent(e.target.value)} />
           <button
           type="submit"
-          className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white 
-          bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
+          className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white shadow-lg
+          bg-blue-700 rounded-lg focus:ring-2 focus:ring-blue-600 hover:bg-blue-800"
           onClick={
             async() => {
+
+              if(!title || !content){
+                alert("Please Fill the content")
+                return
+              }
                 const response = await axios.post(`${BACKEND_URL}/api/v1/blog`, {
                     title,
                     content
@@ -58,7 +63,7 @@ function TextEditor({onChange} : {onChange : (e: React.ChangeEvent<HTMLTextAreaE
     <div className="mt-4">
       <div className="w-full mb-4">
         <div className="flex items-center justify-between border">
-          <div className="bg-white rounded-b-lg w-full ">
+          <div className="bg-white rounded-b-lg w-full dark:bg-[#090D1F] dark:text-white placeholder:text-base placeholder:font-semibold">
             <label htmlFor="editor" className="sr-only">
               Publish post
             </label>
@@ -66,7 +71,7 @@ function TextEditor({onChange} : {onChange : (e: React.ChangeEvent<HTMLTextAreaE
               id="editor"
               rows={8}
               onChange={(e) => onChange(e)}
-              className="pl-2 py-2 block w-full px-0 text-sm text-gray-800 bg-white border-0 "
+              className="pl-2 py-3 block w-full rounded-md px-0 text-base text-gray-800 shadow-lg bg-white border-0 dark:bg-[#090D1F] dark:text-white"
               placeholder="Write an article..."
               required
             />

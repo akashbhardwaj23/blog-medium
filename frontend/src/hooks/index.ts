@@ -3,6 +3,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import {useGoogleLogin, googleLogout, TokenResponse} from "@react-oauth/google"
+import { useStore } from "../state/store";
 
 
 export interface Blog {
@@ -222,8 +223,6 @@ export const useAuthGoogle = () => {
 
 
 
-
-
 // export const userUpdate = () => {
 
 //     const [loading, setLoading] = useState(true);
@@ -261,3 +260,23 @@ export const useAuthGoogle = () => {
 //     }
 
 // }
+
+
+export function useTheme(){
+    
+    const theme = useStore((state) => state.theme)
+    const setTheme = useStore(state => state.setTheme)
+
+    useEffect(() => {
+        console.log("Theme in useEffect is ", theme)
+        document.documentElement.classList.remove("light", "dark");
+        document.documentElement.classList.add(theme)
+        
+    }, [theme])
+
+    return {
+        theme,
+        setTheme
+    }
+}
+
