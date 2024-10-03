@@ -71,13 +71,13 @@ function Profile() {
     <div className="h-screen overflow-hidden">
       <Appbar />
       <div className="grid grid-cols-12 h-full">
-        <div className="col-span-7 border-r border-slate-600 flex flex-col items-center pt-12 overflow-y-hidden">
+        <div className="col-span-7 border-r border-slate-600 flex flex-col items-center pt-12 overflow-y-hidden dark:text-gray-100">
           <div className="w-[70%]">
             <div className="text-4xl font-bold mb-8">
               {user?.name || "Anonymous"}
             </div>
             <div className="text-lg font-medium cursor-pointer mb-8">
-              <span className="border-b border-slate-600">Home</span>
+              <span className="border-b border-slate-600 dark:border-slate-200">Home</span>
             </div>
             <div className="text-xl font-semibold mb-4">Post</div>
             <div>
@@ -98,10 +98,10 @@ function Profile() {
         <div className="col-span-5 flex flex-col items-center pt-12">
           <div className="w-1/2">
             <div className="w-[90%] flex flex-col items-start">
-              <div className="mb-4">
+              <div className="mb-2">
                 <Avatar size="big" authorName={user?.name || "Anonymous"} />
               </div>
-              <div className=" text-lg font-semibold flex items-center">
+              <div className=" text-4xl font-semibold flex items-center mb-2 dark:text-gray-100">
                 {isInput ? (
                   <input
                     type="email"
@@ -114,14 +114,14 @@ function Profile() {
                 )}
                 {!isInput ? (
                   <button
-                    className="px-2 text-sm rounded-sm text-green-600 border border-green-700 py-1 bg-transparent ml-4"
+                    className="px-2 text-xs rounded-sm text-green-600 border border-green-700 py-1 bg-transparent ml-4 font-Inter"
                     onClick={() => setIsInput((prev) => !prev)}
                   >
                     Edit
                   </button>
                 ) : (
                   <button
-                    className="ml-2 px-2 rounded-sm py-1 text-green-600 border border-green-700"
+                    className="ml-2 px-2 text-lg rounded-md py-1 text-green-600 border border-green-700 font-Inter dark:hover:bg-green-50"
                     onClick={sendUsername}
                   >
                     Save
@@ -129,7 +129,7 @@ function Profile() {
                 )}
               </div>
 
-              <div className="text-slate-600 font-medium">100K followers</div>
+              <div className="text-slate-600 font-medium dark:text-slate-100">100K followers</div>
 
               <div>
                 <button className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md mr-4">

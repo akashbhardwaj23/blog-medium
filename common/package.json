@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@akashbhardwaj23/medium-common": "file:",
     "zod": "^3.22.4"
   }
 }

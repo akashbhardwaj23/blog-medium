@@ -5,6 +5,7 @@ import axios from "axios"
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { useAuthGoogle } from "../hooks";
+import Spinner from "./Spinner";
 
 function Auth({ type }: { type: "signup" | "signin" }) {
   const [postInputs, setPostInputs] = useState<SignUpInput>({
@@ -15,7 +16,7 @@ function Auth({ type }: { type: "signup" | "signin" }) {
 
   // component will work but should not do this should define two components for signup and signin
   const navigate = useNavigate()
-  const {login, logout, authToken}= useAuthGoogle();
+  const {login, logout, loading, authToken}= useAuthGoogle();
 
   if(authToken){
     if(localStorage.getItem('token')){
@@ -41,6 +42,18 @@ function Auth({ type }: { type: "signup" | "signin" }) {
     } catch (error) {
       console.log('There is an Error', error)
     }
+  }
+
+
+  if(loading){
+    return (
+      <div className="h-screen flex flex-col justify-center">
+         <div className="flex justify-center">
+         <Spinner />
+         </div>
+
+      </div>
+    )
   }
 
 

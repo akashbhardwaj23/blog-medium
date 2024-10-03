@@ -165,7 +165,7 @@ export const useProfile = (id:string) => {
 }
 
 export const useAuthGoogle = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [credencial, setCredential] = useState<Omit<TokenResponse, "error" | "error_description" | "error_uri">>();
     const [authToken, setAuthToken] = useState<string>();
 
@@ -177,6 +177,7 @@ export const useAuthGoogle = () => {
 
     useEffect(() => {
         if(credencial){
+            setLoading(true)
             axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${credencial.access_token}`, {
                 headers: {
                     Authorization: `Bearer ${credencial.access_token}`,
@@ -201,7 +202,10 @@ export const useAuthGoogle = () => {
                     }
                 setLoading(false);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.error(err);
+                setLoading(false)
+            });
         }
     }, [credencial])
 
