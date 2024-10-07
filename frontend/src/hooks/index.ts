@@ -97,6 +97,7 @@ interface User {
 export const useId = () => {
     const [loading, setLoading] = useState(true)
     const [id, setId] = useState<string>("");
+    const [name, setName] = useState<string>("")
     
     const navigate = useNavigate()
     useEffect(() => {
@@ -112,7 +113,7 @@ export const useId = () => {
                 }
             })
 
-            // console.log(response.data.blogs)
+            console.log(response.data)
             setId(response.data.id)
             setLoading(false)
         }
