@@ -34,16 +34,7 @@ function Appbar() {
             Write
           </button>
         </Link>
-        {/* <img
-          src={`${
-            pathname.pathname === "/notification"
-              ? "/dark-bell.png"
-              : "/bell.png"
-          }`}
-          alt="bell"
-          className="w-10 h-10 p-2 mr-2 cursor-pointer"
-          onClick={() => navigate("/notification")}
-        /> */}
+        
 
         <div className="mr-4 cursor-pointer">
           <svg
