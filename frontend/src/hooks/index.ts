@@ -97,7 +97,6 @@ interface User {
 export const useId = () => {
     const [loading, setLoading] = useState(true)
     const [id, setId] = useState<string>("");
-    const [name, setName] = useState<string>("")
     
     const navigate = useNavigate()
     useEffect(() => {
