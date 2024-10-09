@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Avatar } from "./BlogCard";
-import { useProfile, useTheme, useUser } from "../hooks/index";
+import { useTheme, useUser } from "../hooks/index";
 
 function Appbar() {
   // const pathname = useLocation();
