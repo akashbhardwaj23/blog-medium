@@ -135,9 +135,12 @@ blogRouter.get("/bulk", async (c) => {
                     name : true
                 }
             }
+        },
+        orderBy : {
+            createdAt : 'desc'
         }
     });
-    // console.log(blogs)
+  
     
     return c.json({blogs})
 })

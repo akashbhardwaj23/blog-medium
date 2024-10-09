@@ -7,7 +7,7 @@ function FullBlog({ blog }: { blog: Blog }) {
     <div>
       <Appbar />
       <div className="flex justify-center">
-        <div className="grid grid-cols-12 px-10 w-full pt-12 max-w-screen-xl">
+        <div className="grid grid-cols-12 px-10 w-full pt-12 max-w-screen-xl gap-x-6">
           <div className="col-span-8 px-2">
             <div className="text-5xl font-extrabold break-words dark:text-white">
               {blog.title}
@@ -15,9 +15,9 @@ function FullBlog({ blog }: { blog: Blog }) {
             <div className="text-slate-600 pt-4 dark:text-gray-200">
               Post on {new Date(blog.createdAt).toString()}
             </div>
-            <div className="pt-4 text-lg dark:text-white">{blog.content}</div>
+            <div className="pt-4 text-lg dark:text-white break-words break-all">{blog.content}</div>
           </div>
-          <div className="col-span-4">
+          <div className="col-span-4">       
             <div className="text-slate-600 text-lg font-medium dark:text-gray-200">
               Author
             </div>

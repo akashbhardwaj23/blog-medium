@@ -18,7 +18,7 @@ function BlogCard({
 }: BlogCardProps) {
   return (
     <Link to={`/blog/${id}`}>
-      <div className="border-b border-solid border-white p-8 cursor-pointer dark:text-white">
+      <div className="border-b border-solid border-gray-800 p-8 cursor-pointer dark:text-white dark:border-white">
         <div className="flex">
           <Avatar authorName={authorName} />
           <div className="font-Inter font-bold px-2 tetx-base flex flex-col justify-center">

@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { Avatar } from "./BlogCard";
-import { useId, useTheme } from "../hooks/index";
+import { useProfile, useTheme, useUser } from "../hooks/index";
 
 function Appbar() {
   // const pathname = useLocation();
   // const navigate = useNavigate();
 
-  const { id } = useId();
+  const { user } = useUser();
 
-  // console.log(id)
+  // console.log(user)
 
   /*
 
@@ -56,7 +56,7 @@ function Appbar() {
           <Modes />
         </div>
 
-        <Avatar authorName="Akash" size="big" id={id} />
+        <Avatar authorName={user?.name || ""} size="big" id={user?.id} />
       </div>
     </div>
   );

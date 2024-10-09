@@ -94,9 +94,9 @@ interface User {
 
 
 
-export const useId = () => {
+export const useUser = () => {
     const [loading, setLoading] = useState(true)
-    const [id, setId] = useState<string>("");
+    const [user, setUser] = useState<User>();
     
     const navigate = useNavigate()
     useEffect(() => {
@@ -113,7 +113,7 @@ export const useId = () => {
             })
 
             console.log(response.data)
-            setId(response.data.id)
+            setUser(response.data.user)
             setLoading(false)
         }
 
@@ -122,7 +122,7 @@ export const useId = () => {
 
 
     return {
-        id,
+        user,
         loading
     }
 

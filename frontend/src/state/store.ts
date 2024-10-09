@@ -1,4 +1,5 @@
 import { create } from"zustand"
+import { persist } from "zustand/middleware" 
 
 
 
@@ -10,8 +11,13 @@ interface ThemeType {
     setTheme : (value : Theme) => void
 }
 
-export const useStore = create<ThemeType>()((set) => ({
-    theme : "light",
-    setTheme : (value) => set(() => ({theme : value}))
-
-}))
+export const useStore = create<ThemeType>()(
+    persist(
+        (set) => ({
+        theme : "light",
+        setTheme : (value) => set(() => ({theme : value}))
+    
+    }), {
+        name : "theme",
+    })
+)

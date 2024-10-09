@@ -215,7 +215,6 @@ userRouter.get("/me", async (c) => {
       select : {
         name : true,
         id : true,
-        email : true
       }
     });
     c.status(200);
