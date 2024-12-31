@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import {useGoogleLogin, googleLogout, TokenResponse} from "@react-oauth/google"
@@ -53,6 +53,7 @@ export const useBlog = ({id} : {id :string}) => {
 export const useBlogs = () => {
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<Blog[]>([]);
+    const [error, setError] = useState<string>();
 
     const navigate = useNavigate();
 
@@ -62,16 +63,23 @@ export const useBlogs = () => {
             navigate("/signup")
         }
         const fetchData = async () => {
-            const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-                headers : {
-                    "Content-Type" : "application/json",
-                    "Authorization" : `Bearer ${token}`
-                }
-            })
-
-            // console.log(response.data.blogs)
-            setBlogs(response.data.blogs)
-            setLoading(false)
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
+                    headers : {
+                        "Content-Type" : "application/json",
+                        "Authorization" : `Bearer ${token}`
+                    }
+                })
+                
+                // console.log(response.data.blogs)
+                setBlogs(response.data.blogs)
+                setLoading(false)
+            } catch (error) {    
+                console.log(error)
+                //@ts-ignore
+                setError(error.message);
+                setLoading(false)
+            }
         }
 
         fetchData();
@@ -79,7 +87,8 @@ export const useBlogs = () => {
 
     return {
         loading,
-        blogs
+        blogs,
+        error
     }
 
 }

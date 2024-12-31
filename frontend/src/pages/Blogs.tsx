@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Appbar from "../components/Appbar";
 import BlogCard from "../components/BlogCard";
 import BlogSkeleton from "../components/BlogSkeleton";
@@ -9,7 +10,10 @@ function Blogs() {
   // store it in a context
   // create our own custom hook called useBlogs
 
-  const { loading, blogs } = useBlogs();
+  const { loading, blogs, error } = useBlogs();
+  const navigate = useNavigate()
+
+
 
   if (loading) {
     return (
@@ -44,18 +48,29 @@ function Blogs() {
                 Recent Blog Posts
               </h1>
             </div>
-            {blogs.map((blog) => (
-              <BlogCard
-                id={blog.id}
-                key={blog.id}
-                authorName={blog.author.name || "Anonymous"}
-                title={blog.title}
-                content={blog.content}
-                publishedDate={new Date(
-                  Date.parse(blog.createdAt)
-                ).toDateString()}
-              />
-            ))}
+            {
+              !error && blogs.length > 0 ? blogs.map((blog) => (
+                <BlogCard
+                  id={blog.id}
+                  key={blog.id}
+                  authorName={blog.author.name || "Anonymous"}
+                  title={blog.title}
+                  content={blog.content}
+                  publishedDate={new Date(
+                    Date.parse(blog.createdAt)
+                  ).toDateString()}
+                />
+              )) : (
+                <div className="flex flex-col justify-center items-center">
+                  <div className="text-center text-red-500 text-xl font-Inter font-semibold dark:text-red-500">
+                    Error Occured {error}
+                  </div>
+                  <div className="text-center text-red-500 text-xl font-Inter font-semibold hover:cursor-pointer dark:text-red-500" onClick={() => navigate("/signup")}>
+                    Please Signup to view the blogs
+                  </div>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
