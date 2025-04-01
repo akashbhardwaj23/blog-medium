@@ -14,37 +14,8 @@ const userRouter = new Hono<{
   };
 }>();
 
-userRouter.post("/googleIn", async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
 
-  const body = await c.req.json();
-  console.log(body);
 
-  // check if the user exist
-  // const user = await prisma.user.findFirst({
-
-  // })
-
-  const user = await prisma.user.create({
-    data: {
-      name: body.name,
-      email: body.email,
-      password: "sggd",
-    },
-  });
-
-  const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
-
-  c.status(200);
-  return c.json({ user, jwt });
-});
-
-// Don't Initialize prisma at the top because of worker
-
-// c is context
-// you will get the environment variables from the context
 userRouter.post("/signup", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -92,6 +63,47 @@ userRouter.post("/signup", async (c) => {
   return c.json({ jwt });
 });
 
+
+userRouter.post("/googleIn", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const body = await c.req.json();
+  console.log(body);
+
+  // check if the user exist
+  const existingUser = await prisma.user.findFirst({
+      where : {
+        email : body.email
+      }
+  })
+  if (existingUser){
+    const jwt = await sign({ id: existingUser.id }, c.env.JWT_SECRET);
+
+    c.status(200)
+    return c.json({existingUser, jwt})
+  }
+
+  const user = await prisma.user.create({
+    data: {
+      name: body.name,
+      email: body.email,
+      password: "sggd",
+    },
+  });
+
+  const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
+
+  c.status(200);
+  return c.json({ user, jwt });
+});
+
+// Don't Initialize prisma at the top because of worker
+
+// c is context
+// you will get the environment variables from the context
+
 userRouter.post("/signin", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -117,6 +129,7 @@ userRouter.post("/signin", async (c) => {
     }
 
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
+
     console.log(jwt);
     return c.json({ jwt });
   } catch (error) {
@@ -155,12 +168,112 @@ userRouter.use("/*", async (c, next) => {
   }
 });
 
-userRouter.put("/change-username", async (c) => {
+userRouter.put("/follow", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  console.log("here");
+  const { userId } = await c.req.json()
+
+  try {
+    const id = c.get("userId");
+
+    await prisma.user.update({
+      where : {
+        id : userId
+      }, 
+      data : {
+        followers : {
+          create : {
+            followingId : id
+          }
+        }
+      }
+    })
+
+
+   const user = await prisma.user.update({
+      where : {
+        id 
+      }, 
+      data : {
+        following : {
+          create : {
+            followerId : userId
+          }
+        }
+      }
+    })
+
+    c.status(200)
+    c.json({
+      user
+    })
+  } catch (error) {
+    console.log(error)
+    c.status(403)
+    return c.json({
+      message : "Request Failed"
+    })
+  }
+
+})
+
+
+userRouter.put("/unfollow", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const {userId} = await c.req.json();
+  
+  try {
+    const id = c.get('userId');
+
+    await prisma.user.update({
+      where : {
+        id : userId
+      }, 
+      data : {
+        followers : {
+          deleteMany : {
+            followingId : id
+          }
+        }
+      }
+    })
+
+    const user = await prisma.user.update({
+      where : {
+        id
+      }, 
+      data : {
+        following : {
+          deleteMany : {
+            followerId : userId
+          }
+        }
+      }
+    })
+
+    c.status(200)
+
+    return c.json({
+      user
+    })
+  } catch (error) {
+    console.log(error)
+    c.status(403)
+    return c.json({
+      message : "Request Failed"
+    })
+  }
+})
+
+userRouter.put("/change-username", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
 
   const { username } = await c.req.json();
 
@@ -206,7 +319,6 @@ userRouter.get("/me", async (c) => {
   }).$extends(withAccelerate());
   try {
     const id = c.get("userId");
-    console.log(id);
 
     const user = await prisma.user.findFirst({
       where: {
@@ -214,9 +326,11 @@ userRouter.get("/me", async (c) => {
       },
       select : {
         name : true,
-        id : true,
+        id : true
       }
     });
+
+    console.log(user)
     c.status(200);
     return c.json({ user });
   } catch (error) {
@@ -241,6 +355,8 @@ userRouter.get(`/me/:id`, async (c) => {
         name: true,
         email: true,
         id: true,
+        followers : true,
+        following : true,
         posts: true,
       },
     });

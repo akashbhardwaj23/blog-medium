@@ -14,8 +14,21 @@ model User {
  email String @unique
  name String?
  password String
+ followers  Follow[] @relation("followedBy")
+ following  Follow[] @relation("following")
  posts  Post[]
  createdAt DateTime @default(now())
+ 
+}
+
+
+model Follow {
+  follower User @relation("followedBy",fields: [followerId], references: [id])
+  followerId String
+  following User @relation("following",fields: [followingId], references: [id])
+  followingId String
+
+  @@id([followerId, followingId])
 }
 
 model Post {
@@ -26,4 +39,5 @@ model Post {
   author User @relation(fields: [authorId], references: [id])
   authorId String
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

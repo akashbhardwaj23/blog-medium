@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Appbar from "../components/Appbar";
 import { useProfile } from "../hooks";
 import { Avatar } from "../components/BlogCard";
 import Spinner from "../components/Spinner";
 import { useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import Appbar from "../components/Appbar";
 
 function Profile() {
   const { id } = useParams();
@@ -25,7 +25,7 @@ function Profile() {
     console.log(token);
 
     try {
-        await axios.put(
+      await axios.put(
         `${BACKEND_URL}/api/v1/user/change-username`,
         { username },
         {
@@ -42,25 +42,17 @@ function Profile() {
     setIsInput((prev) => !prev);
     setUsername("");
 
-
-
-
-    //  i am using artificial reload here 
-
+    //  i am using artificial reload here
     window.location.reload();
-
-
-    
   };
 
-  //   console.log(user?.posts)
   const navigate = useNavigate();
 
   if (loading) {
     return (
       <div>
         <Appbar />
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center min-h-96">
           <Spinner />
         </div>
       </div>
@@ -77,21 +69,27 @@ function Profile() {
               {user?.name || "Anonymous"}
             </div>
             <div className="text-lg font-medium cursor-pointer mb-8">
-              <span className="border-b border-slate-600 dark:border-slate-200">Home</span>
+              <span className="border-b border-slate-600 dark:border-slate-200">
+                Home
+              </span>
             </div>
             <div className="text-xl font-semibold mb-4">Post</div>
             <div>
-              {user?.posts.map(((post) => (
-                <div key={post.id} className="bg-zinc-100 shadow-md p-4 rounded-sm">
+              {user?.posts.map((post) => (
+                <div
+                  key={post.id}
+                  className="bg-zinc-100 shadow-md p-4 rounded-sm cursor-pointer mb-4"
+                  onClick={() => navigate(`/blog/${post.id}`)}
+                >
                   <div className="flex items-center justify-between mb-2">
                     <div className="text-2xl font-semibold">{post.title}</div>
                     <div className="text-lg font-medium text-slate-600 flex justify-end items-end">
-                     {new Date(Date.parse(post.createdAt)).toDateString()}
+                      {new Date(Date.parse(post.createdAt)).toDateString()}
                     </div>
                   </div>
                   <div className="text-slate-700">{post.content}</div>
                 </div>
-              )))}
+              ))}
             </div>
           </div>
         </div>
@@ -129,12 +127,22 @@ function Profile() {
                 )}
               </div>
 
-              <div className="text-slate-600 font-medium dark:text-slate-100">100K followers</div>
+              <div className="flex items-center justify-center gap-4">
+                <div className="text-slate-600 font-medium dark:text-slate-100">
+                  {user?.followers.length} Followers
+                </div>
+
+                <div className="text-slate-600 font-medium dark:text-slate-100">
+                  {user?.following.length} Following
+                </div>
+              </div>
 
               <div>
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md mr-4">
-                  Follow
-                </button>
+                {user?.id !== id && (
+                  <button className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md mr-4">
+                    Follow
+                  </button>
+                )}
                 <button
                   className="px-4 py-2 bg-blue-500 text-white font-semibold mt-4 rounded-md"
                   onClick={() => {

@@ -8,6 +8,7 @@ import Authentication from './components/Authentication'
 import NotFound from './pages/NotFound'
 import Notification from './pages/Notification'
 import Profile from './pages/Profile'
+import Appbar from './components/Appbar'
 
 function App() {
 

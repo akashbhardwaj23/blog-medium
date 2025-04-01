@@ -3,18 +3,8 @@ import { Avatar } from "./BlogCard";
 import { useTheme, useUser } from "../hooks/index";
 
 function Appbar() {
-  // const pathname = useLocation();
-  // const navigate = useNavigate();
 
   const { user } = useUser();
-
-  // console.log(user)
-
-  /*
-
-  Need to find a better way to use id because this hook is used at two places In here and in Profile.tsx
-
-*/
 
   return (
     <div className="border-b flex justify-between px-10 py-4 dark:text-white">

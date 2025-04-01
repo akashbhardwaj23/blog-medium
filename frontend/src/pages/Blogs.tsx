@@ -13,8 +13,7 @@ function Blogs() {
   const { loading, blogs, error } = useBlogs();
   const navigate = useNavigate()
 
-
-
+  
   if (loading) {
     return (
       <div>
@@ -49,18 +48,28 @@ function Blogs() {
               </h1>
             </div>
             {
-              !error && blogs.length > 0 ? blogs.map((blog) => (
-                <BlogCard
-                  id={blog.id}
-                  key={blog.id}
-                  authorName={blog.author.name || "Anonymous"}
-                  title={blog.title}
-                  content={blog.content}
-                  publishedDate={new Date(
-                    Date.parse(blog.createdAt)
-                  ).toDateString()}
-                />
-              )) : (
+              !error ? (<>
+                {
+                  blogs.length > 0 ? (
+                    blogs.map((blog) => (
+                      <BlogCard
+                        id={blog.id}
+                        key={blog.id}
+                        authorName={blog.author.name || "Anonymous"}
+                        title={blog.title}
+                        content={blog.content}
+                        publishedDate={new Date(
+                          Date.parse(blog.createdAt)
+                        ).toDateString()}
+                      />
+                    ))
+                  ) : (
+                    <div className="text-center text-red-600 text-xl font-Inter font-semibold dark:text-red-500">
+                      No Blogs Currently found Create One
+                    </div>
+                  )
+                }
+              </>) : (
                 <div className="flex flex-col justify-center items-center">
                   <div className="text-center text-red-500 text-xl font-Inter font-semibold dark:text-red-500">
                     Error Occured {error}

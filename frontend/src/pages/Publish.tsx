@@ -1,8 +1,8 @@
 import axios from "axios";
-import Appbar from "../components/Appbar";
 import { BACKEND_URL } from "../config";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Appbar from "../components/Appbar";
 
 function Publish() {
     const [title, setTitle] = useState("");
@@ -10,7 +10,6 @@ function Publish() {
 
 
     const navigate = useNavigate();
-    // console.log(title, content)
 
   return (
     <div>

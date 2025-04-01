@@ -4,21 +4,12 @@ import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import {useGoogleLogin, googleLogout, TokenResponse} from "@react-oauth/google"
 import { useStore } from "../state/store";
+import { BlogType, UserProfileType, UserType } from "../types/type";
 
-
-export interface Blog {
-    content : string;
-    title : string;
-    id : string;
-    createdAt : string;
-    author : {
-        name : string;
-    }
-}
 
 export const useBlog = ({id} : {id :string}) => {
     const [loading, setLoading] = useState(true);
-    const [blog, setBlog] = useState<Blog>();
+    const [blog, setBlog] = useState<BlogType>();
 
     const navigate = useNavigate();
 
@@ -52,7 +43,7 @@ export const useBlog = ({id} : {id :string}) => {
 
 export const useBlogs = () => {
     const [loading, setLoading] = useState(true);
-    const [blogs, setBlogs] = useState<Blog[]>([]);
+    const [blogs, setBlogs] = useState<BlogType[]>([]);
     const [error, setError] = useState<string>();
 
     const navigate = useNavigate();
@@ -93,19 +84,11 @@ export const useBlogs = () => {
 
 }
 
-interface User {
-    name : string;
-    email : string;
-    id : string;
-    posts : Blog[],
-    createdAt? : string
-}
-
 
 
 export const useUser = () => {
     const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState<User>();
+    const [user, setUser] = useState<UserType>();
     
     const navigate = useNavigate()
     useEffect(() => {
@@ -141,7 +124,7 @@ export const useUser = () => {
 
 export const useProfile = (id:string) => {
     const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState<User>();
+    const [user, setUser] = useState<UserProfileType>();
     
     const navigate = useNavigate()
     useEffect(() => {

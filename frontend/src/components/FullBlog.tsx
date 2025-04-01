@@ -1,8 +1,10 @@
+import { BlogType } from "../types/type";
 import Appbar from "./Appbar";
-import { Blog } from "../hooks";
 import { Avatar } from "./BlogCard";
 
-function FullBlog({ blog }: { blog: Blog }) {
+function FullBlog({blog} : {
+  blog : BlogType
+}) {
   return (
     <div>
       <Appbar />

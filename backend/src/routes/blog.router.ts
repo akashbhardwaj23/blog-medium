@@ -18,17 +18,9 @@ const blogRouter = new Hono<{
 
 
 blogRouter.use('/*', async(c, next) => {
-    // extract the user id and pass it down to 
-    // route handler
-    // get the header
-    // verify the header
-    // if the header is correct we can proceed
-    // if not, we return the user a 403 code
-
-
     const header = c.req.header("authorization") || "";
 
-    const token = header?.split(" ")[1]
+    const token = header.split(" ")[1]
 
 
     try {
