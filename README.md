@@ -1,4 +1,4 @@
-# Blog Medium
+# Blogging
 
 A full-stack blogging platform inspired by Medium, allowing users to create, read, and manage blog posts with a clean and intuitive interface.
 
